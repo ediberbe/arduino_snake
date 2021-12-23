@@ -1,3 +1,7 @@
+/*
+  The program works by infinitely looping a switch case based on STATE_ variables
+*/
+
 #include <LiquidCrystal.h>
 #include "LedControl.h"
 
@@ -26,9 +30,20 @@ const int buzzer = 9;
 
 //================VAR================
 
-int state = 9;
 String username = "john";
 int difficulty = 0;
+
+//states
+int state = 9;
+const int STATE_MAINMENU = 9;
+const int STATE_MAINLOOP = 0;
+const int STATE_HIGHSCORE = 1;
+const int STATE_SETTINGS = 2;
+const int STATE_ABOUT = 3;
+const int STATE_SETNAME = 10;
+const int STATE_SETDIFF = 11;
+const int STATE_SETAUDIO = 12;
+const int STATE_RESETHS = 13;
 
 //display
 LiquidCrystal lcd(RS, enable, d4, d5, d6, d7);
@@ -53,7 +68,7 @@ int menuMainCount = 4;
 String menuSettings[4] = {"Set Difficulty", "Switch Audio", "Reset HS", ""};
 int menuSettingsCount = 3;
 
-String menuAbout[4] = {"Snake", "Edi Berbescu", "https://github.com/ediberbe/IntroductionToRobotics"};
+String menuAbout[4] = {"Snake", "Edi Berbescu", "https://github.com/ediberbe/arduino_snake"};
 int menuAboutCount = 3;
 
 bool matrixAnimation = true;
@@ -97,7 +112,6 @@ bool isDead = false;
 
 int yVel = 0;
 int xVel = 0;
-
 int LASTxVel = 0;
 int LASTyVel = 0;
 
@@ -111,8 +125,6 @@ int bombBlinkTimer;
 int bombBlinkDuration = 100;
 int bombBlinkState = 1;
 
-
-
 // buzzer
 bool isAudio = true;
 int buzzTimer;
@@ -121,6 +133,7 @@ int buzzDuration = 150;
 //================FUNC================
 
 void updateMatrix() {
+  //turns on/off matrix leds acording to matrix[][]
   for (int row = 0; row < matrixSize; row++) {
     for (int col = 0; col < matrixSize; col++) {
       lc.setLed(0, row, col, matrix[row][col]);
@@ -129,6 +142,7 @@ void updateMatrix() {
 }
 
 void clearMatrix() {
+  //turns off every led
   for (int row = 0; row < matrixSize; row++) {
     for (int col = 0; col < matrixSize; col++) {
       matrix[row][col] = 0;
@@ -139,6 +153,9 @@ void clearMatrix() {
 
 bool isNewHighscore = false;
 void updateHighscore(){
+  //could've used a sorting algorithm but decided against it
+
+  //first case place 1
   if(score >= highScores[0]){
     highScores[2] = highScores[1];
     highNames[2] = highNames[1];
@@ -148,6 +165,7 @@ void updateHighscore(){
     highScores[0] = score;
   }
 
+  //second case place 2
   else if(score >= highScores[1]){
     highScores[2] = highScores[1];
     highNames[2] = highNames[1];
@@ -155,6 +173,7 @@ void updateHighscore(){
     highScores[1] = score;
   }
 
+  //third case place 3
   else if(score >= highScores[2]){
     highNames[2] = username;
     highScores[2] = score;
@@ -162,29 +181,33 @@ void updateHighscore(){
 }
 
 void updatePositions() {
+  // makes the snake move based on xVel,xPos
 
   matrixChanged = true;
-
+  //removes snake from matrix
   for(int i=0;i<snakeSize;i++){
     matrix[snakePos[i][0]][snakePos[i][1]] = 0;
   }
 
+  //moves each snake block one position to the right in list
   for(int i=snakeSize;i>0;i--){
     snakePos[i][0] = snakePos[i-1][0];
     snakePos[i][1] = snakePos[i-1][1];
   }
 
+  //determines new head position and adds it first in list
   snakePos[0][0] = snakePos[0][0] + yVel;
   snakePos[0][1] = snakePos[0][1] + xVel;
   LASTxVel = xVel;
   LASTyVel = yVel;
 
-
+  //increments size if snake has changed
   if(snakeChanged){
     snakeChanged = false;
     snakeSize++;
   }
 
+  //adds snake to matrix
   for(int i=0;i<snakeSize;i++){
     matrix[snakePos[i][0]][snakePos[i][1]] = 1;
   }
@@ -198,8 +221,8 @@ void updatePositions() {
   if(xBomb == snakePos[0][0] && yBomb == snakePos[0][1] && difficulty ==2)
       isDead = true;
 
+  // death condition
   if(snakePos[0][0]<0 || snakePos[0][0]>7 || snakePos[0][1]<0 || snakePos[0][1]>7 || isDead == true){
-    // DEATH
     state = 9;
     menuSelection = 0;
     snakePos[0][0] = 0;
@@ -214,6 +237,7 @@ void updatePositions() {
     isDead = false;
     matrixAnimation = true;
 
+    // if new highscore then proceed to selecting name
     if(score >= highScores[2]){
       state = 10;
       isNewHighscore = true;
@@ -227,6 +251,9 @@ void updatePositions() {
 }
 
 void joystickMovement() {
+  //joystick control used in-game
+
+  //read joystick movement
   xPosition = analogRead(VRx);
   yPosition = analogRead(VRy);
   SW_state = digitalRead(SW);
@@ -262,12 +289,16 @@ void joystickMovement() {
 }
 
 void updateFood() {
+  //updating food used in-game
+
   matrix[xFood][yFood] = 1;
+
+  //if snake eats food
   if(snakePos[0][0] == xFood && snakePos[0][1] == yFood){
     score=score+1+difficulty;
-    
     snakeChanged = true;
 
+    //find new valid food position
     bool isValidFoodPos = false;
     while(!isValidFoodPos)
     {
@@ -286,12 +317,15 @@ void updateFood() {
     matrix[xFood][yFood] = 1;
     matrixChanged = true;
 
+    //turns on eating sound cue
     if(isAudio)tone(buzzer, 1000);
     buzzTimer = millis();
   }
 }
 
 void updateBomb() {
+  //updating bombs used in-game in difficulty 2
+
   if(millis()- bombBlinkTimer > bombBlinkDuration){
     if(bombBlinkState == 1) bombBlinkState = 0;
     else bombBlinkState = 1;
@@ -302,14 +336,16 @@ void updateBomb() {
 }
 
 void updateLCD() {
+  //updating lcd used in-game to display stats
+
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Score: ");
   lcd.print(score);
-
 }
 
 void matrixPrintAnimation(int index) {
+  //prints designs on the matrix
 
   if(matrixAnimation){
     clearMatrix();
@@ -408,26 +444,38 @@ void setup() {
   lc.shutdown(0, false); // turn off power saving, enables display
   lc.setIntensity(0, matrixBrightness); // sets brightness (0~15 possible values)
   lc.clearDisplay(0);// clear screen
+
+  //Welcome message
+  lcd.setCursor(0, 0);
+  lcd.print("Welcome to snake!");
+  delay(1000);
+  lcd.clear();
 }
 
 void loop() {
 
+  //end sound
   if(millis()-buzzTimer>buzzDuration)noTone(buzzer);
 
   switch (state) {
-    case 9: //================mainmenu================    
+    case STATE_MAINMENU: //================mainmenu================    
+
+      //lcd display
       lcd.setCursor(0, 0);
       lcd.write(byte(0));
       lcd.print(menuMain[menuSelection]);
       lcd.setCursor(0, 1);
       lcd.print(menuMain[menuSelection+1]);
 
+      //matrix display
       matrixPrintAnimation(1);
       
+      //read joystick movement
       xPosition = analogRead(VRx);
       yPosition = analogRead(VRy);
       SW_state = digitalRead(SW);
       
+      //if joystick has moved
       if(xPosition>100 && xPosition<900 && yPosition>100 && yPosition<900) joyReady = true;
       else if(joyReady == true){
         joyReady = false;
@@ -457,6 +505,7 @@ void loop() {
         }
       }
 
+      //if joystick has been clicked
       if(SW_state == 0 && SW_state_last == 1) {
         Serial.println("Press");
       }
@@ -464,12 +513,13 @@ void loop() {
 
       break;
 
-    case 0: //================Start game================
+    case STATE_MAINLOOP: //================Main game loop================
 
       matrixPrintAnimation(0);
       joystickMovement();
       if(difficulty == 2) updateBomb();
 
+      //update game at interval
       if (millis() - lastMoved > moveInterval) {
         updateLCD();
         updateFood();
@@ -477,6 +527,7 @@ void loop() {
         lastMoved = millis();
       }
 
+      //update matrix
       if (matrixChanged == true) {
         updateMatrix();
         matrixChanged = false;
@@ -484,9 +535,9 @@ void loop() {
 
       break;
 
-    case 1: //================Highscore================
-      Serial.println("Highscore");
+    case STATE_HIGHSCORE: //================Highscore================
 
+      //lcd display
       lcd.setCursor(0, 0);
       lcd.print(highNames[menuSelection]);
       lcd.print(": ");
@@ -496,119 +547,127 @@ void loop() {
       lcd.print(": ");
       lcd.print(highScores[menuSelection+1]);
       
+      //matrix display
       matrixPrintAnimation(2);
 
+      //read joystick movement
       xPosition = analogRead(VRx);
       yPosition = analogRead(VRy);
       SW_state = digitalRead(SW);
       
+      //if joystick has moved
       if(xPosition>100 && xPosition<900 && yPosition>100 && yPosition<900) joyReady = true;
       else if(joyReady == true){
         joyReady = false;
         lcd.clear();
         
         if(xPosition<100) {
-          Serial.println("Joystick Left");
-          state = 9;
+          //Joystick Left = Go back to main-menu
+          state = STATE_MAINMENU;
           menuSelection = 0;
           matrixAnimation = true;
         }
 
         if(xPosition>900) {
-          Serial.println("Joystick Right");
+          //Joystick Right
         }
         
         if(yPosition<100) {
-          Serial.println("Joystick Up");
+          //Joystick Up = Scroll menu up
           if(menuSelection != 0) menuSelection--;
         }
 
         if(yPosition>900) {
-          Serial.println("Joystick Down");
+          //Joystick Down = Scroll menu down
           if(menuSelection != 1) menuSelection++;
         }
       }
 
-      if(SW_state == 0 && SW_state_last == 1) {
-        Serial.println("Press");
-      }
+      //if joystick has been clicked
+      if(SW_state == 0 && SW_state_last == 1) {}
       SW_state_last = SW_state;
 
       break;
       
-    case 2: //================Settings================
-      Serial.println("Settings");
+    case STATE_SETTINGS: //================Settings================
 
+      //lcd display
       lcd.setCursor(0, 0);
       lcd.write(byte(0));
       lcd.print(menuSettings[menuSelection]);
       lcd.setCursor(0, 1);
       lcd.print(menuSettings[menuSelection+1]);
       
+      //matrix display
       matrixPrintAnimation(3);
 
+      //read joystick movement
       xPosition = analogRead(VRx);
       yPosition = analogRead(VRy);
       SW_state = digitalRead(SW);
       
+      //if joystick has moved
       if(xPosition>100 && xPosition<900 && yPosition>100 && yPosition<900) joyReady = true;
       else if(joyReady == true){
         joyReady = false;
         lcd.clear();
 
         if(xPosition<100) {
-          Serial.println("Joystick Left");
-          state = 9;
+          //Joystick Left = Go back to main-menu
+          state = STATE_MAINMENU;
           menuSelection = 0;
           matrixAnimation = true;
         }
 
         if(xPosition>900) {
-          Serial.println("Joystick Right");
-          if(menuSelection == 0) state = 11; //Settings-Difficulty
-          if(menuSelection == 1) state = 12; //Settings-Audio
-          if(menuSelection == 2) state = 13; //Settings-ResetHS
+          //Joystick right = Select option
+          if(menuSelection == 0) state = STATE_SETDIFF;
+          if(menuSelection == 1) state = STATE_SETAUDIO;
+          if(menuSelection == 2) state = STATE_RESETHS;
           menuSelection = 0;
         }
 
         if(yPosition<100) {
-          Serial.println("Joystick Up");
+          //Joystick Up = Scroll menu up
           if(menuSelection != 0) menuSelection--;
         }
 
         if(yPosition>900) {
-          Serial.println("Joystick Down");
+          //Joystick Down = Scroll menu down
           if(menuSelection != menuSettingsCount-1) menuSelection++;
         }
       }
 
-      if(SW_state == 0 && SW_state_last == 1) {
-        Serial.println("Press");
-      }
+      //if joystick has been clicked
+      if(SW_state == 0 && SW_state_last == 1) {}
       SW_state_last = SW_state;
 
       break;
       
-    case 3: //================About================
-      Serial.println("About");
+    case STATE_ABOUT: //================About================
 
+      //lcd display
       lcd.setCursor(0, 0);
       lcd.print(menuAbout[menuSelection]);
       lcd.setCursor(0, 1);
       lcd.print(menuAbout[menuSelection+1]);
       
+      //matrix display
       matrixPrintAnimation(4);
 
+      //scrollLeft if text too big
       if((menuAbout[menuSelection].length() > 16 || menuAbout[menuSelection+1].length() > 16)
           && millis() - lastMoved > 500){
         lcd.scrollDisplayLeft();
         lastMoved = millis();
       }
 
+      //read joystick movement
       xPosition = analogRead(VRx);
       yPosition = analogRead(VRy);
       SW_state = digitalRead(SW);
       
+      //if joystick has moved
       if(xPosition>100 && xPosition<900 && yPosition>100 && yPosition<900) joyReady = true;
       else if(joyReady == true){
         joyReady = false;
@@ -616,129 +675,126 @@ void loop() {
         lastMoved = millis();
         
         if(xPosition<100) {
-          Serial.println("Joystick Left");
-          state = 9;
+          //Joystick Left = Go back to settings
+          state = STATE_MAINMENU;
           menuSelection = 0;
           matrixAnimation = true;
         }
 
-        if(xPosition>900) {
-          Serial.println("Joystick Right");
+        if(xPosition>900) {//Joystick right
         }
         
         if(yPosition<100) {
-          Serial.println("Joystick Up");
+          //Joystick Up = Scroll menu up
           if(menuSelection != 0) menuSelection--;
         }
 
         if(yPosition>900) {
-          Serial.println("Joystick Down");
+          //Joystick Down = Scroll menu down
           if(menuSelection != menuAboutCount-2) menuSelection++;
         }
       }
 
-      if(SW_state == 0 && SW_state_last == 1) {
-        Serial.println("Press");
-      }
+      //if joystick has been clicked
+      if(SW_state == 0 && SW_state_last == 1) {}
       SW_state_last = SW_state;
 
       break;
       
-    case 10: //================Settings-Name================
-      Serial.println("Settings-Name");
+    case STATE_SETNAME: //================Set Highscore Name================
 
+      //lcd display
       lcd.setCursor(0, 0);
       lcd.print(username);
       lcd.setCursor(menuSelection, 1);
       lcd.print('X');
     
+      //matrix display
       matrixPrintAnimation(2);
 
+      //read joystick movement
       xPosition = analogRead(VRx);
       yPosition = analogRead(VRy);
       SW_state = digitalRead(SW);
       
+      //if joystick has moved
       if(xPosition>100 && xPosition<900 && yPosition>100 && yPosition<900) joyReady = true;
       else if(joyReady == true){
         joyReady = false;
         lcd.clear();
 
         if(xPosition<100) {
-          Serial.println("Joystick Left");
+          //Joystick Left = Select letter on left
           if(menuSelection != 0) menuSelection--;
         }
 
         if(xPosition>900) {
-          Serial.println("Joystick Right");
+          //Joystick Right = Select letter on right
           if(menuSelection != 15) menuSelection++;
         }
 
         if(yPosition<100) {
-          Serial.println("Joystick Up");
+          //Joystick Up = Change letter
           username[menuSelection]--;
         }
 
         if(yPosition>900) {
-          Serial.println("Joystick Down");
+          //Joystick Down = Change letter
           username[menuSelection]++;
         }
       }
 
+      //if joystick has been clicked SET NAME and go back to MAINMENU
       if(SW_state == 0 && SW_state_last == 1) {
-        Serial.println("Press");
-        if(isNewHighscore){
           isNewHighscore = false;
           updateHighscore();
           score = 0;
-          state = 9;
+          state = STATE_MAINMENU;
           menuSelection = 0;
           matrixAnimation = true;
-        }
-        else{
-          state = 2;
-          menuSelection = 0;
-        }
       }
       SW_state_last = SW_state;
       break;
 
-    case 11: //================Settings-Difficulty================
-      Serial.println("Settings-Difficulty");
+    case STATE_SETDIFF: //================Settings-Difficulty================
 
+      //lcd display
       lcd.setCursor(0, 0);
       lcd.print(difficulty);
     
+      //read joystick movement
       xPosition = analogRead(VRx);
       yPosition = analogRead(VRy);
       SW_state = digitalRead(SW);
       
+      //if joystick has moved
       if(xPosition>100 && xPosition<900 && yPosition>100 && yPosition<900) joyReady = true;
       else if(joyReady == true){
         joyReady = false;
         lcd.clear();
 
         if(xPosition<100) {
-          Serial.println("Joystick Left");
+          //Joystick Left
         }
 
         if(xPosition>900) {
-          Serial.println("Joystick Right");
+          //Joystick Right
         }
 
         if(yPosition<100) {
-          Serial.println("Joystick Up");
+          //Joystick Up = Increase difficulty
           if(difficulty != 2) difficulty++;
         }
 
         if(yPosition>900) {
-          Serial.println("Joystick Down");
+          //Joystick Down = Decrease difficulty
           if(difficulty != 0) difficulty--;
         }
       }
 
+      //if joystick has been clicked SET DIFFICULTY and go back to settings
       if(SW_state == 0 && SW_state_last == 1) {
-        Serial.println("Press");
-        state = 2;
+        state = STATE_SETTINGS;
         menuSelection = 0;
 
         if(difficulty == 0) moveInterval = 200;
@@ -748,52 +804,51 @@ void loop() {
       SW_state_last = SW_state;
       break;
 
-    case 12: //================Settings-Audio================
-      Serial.println("Settings-Audio");
-
+    case STATE_SETAUDIO: //================Settings-Audio================
+     
+      //lcd display
       lcd.setCursor(0, 0);
       lcd.print(isAudio);
     
+      //read joystick movement
       xPosition = analogRead(VRx);
       yPosition = analogRead(VRy);
       SW_state = digitalRead(SW);
       
+      //if joystick has moved
       if(xPosition>100 && xPosition<900 && yPosition>100 && yPosition<900) joyReady = true;
       else if(joyReady == true){
         joyReady = false;
         lcd.clear();
 
         if(xPosition<100) {
-          Serial.println("Joystick Left");
+          //Joystick Left
         }
 
         if(xPosition>900) {
-          Serial.println("Joystick Right");
+          //Joystick Right
         }
 
         if(yPosition<100) {
-          Serial.println("Joystick Up");
+          //Joystick Up = Toggle Audio
           isAudio = !isAudio;
         }
 
         if(yPosition>900) {
-          Serial.println("Joystick Down");
+          //Joystick Down = Toggle Audio
           isAudio = !isAudio;
         }
       }
 
+      //if joystick has been clicked and go back to settings
       if(SW_state == 0 && SW_state_last == 1) {
-        Serial.println("Press");
-        state = 2;
+        state = STATE_SETTINGS;
         menuSelection = 0;
-
-        if(difficulty == 0) moveInterval = 200;
-        else if(difficulty == 1) moveInterval = 150;
-        else if(difficulty == 2) moveInterval = 100;
       }
+
       SW_state_last = SW_state;
       break;
-    case 13: //================Settings-ResetHS================
+    case STATE_RESETHS: //================Settings-ResetHS================
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("Done!");
@@ -803,7 +858,7 @@ void loop() {
       highScores[0] = 0;
       highScores[1] = 0;
       highScores[2] = 0;
-      state = 2;
+      state = STATE_SETTINGS;
       menuSelection = 0;
       delay(1000);
     break;

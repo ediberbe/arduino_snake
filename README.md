@@ -38,11 +38,11 @@ off. The menu should include the following functionality:
     (b) Screen 2: display relevant game info: score, time, lives left etc. Must inform player if he/she beat the highscore. This menu should only be closed by the player, pressing a button.
     
  **Game Requirements**:  
-    – Minimal components: an LCD, a joystick, a buzzer and the led matrix.  
-    – You must add basic sounds to the game (when ”eating” food, when dying, when finishing the level etc). Extra: add theme songs.  
-    – It must be intuitive and fun to play.  
-    – It must make sense in the current setup. Study the idea of a panning camera - aka the 8x8 led doesn’t need to be the entire map. It can only be the current field of view of the player.  
-    – The levels must progress dynamically. Aka the level difficulty, score and other properties should be a function of the level number or time. However, the challenge here is for it to grow in a playable way  
-    - not too easy for a long time so it becomes boring, not too hard too fast so it’s not attractive. Also, it’s nice to have an ending, a final level, a boss etc. It shouldn’t necessarily go on forever (but that’s fine, though).  
+       – Minimal components: an LCD, a joystick, a buzzer and the led matrix.  
+       – You must add basic sounds to the game (when ”eating” food, when dying, when finishing the level etc). Extra: add theme songs.  
+       – It must be intuitive and fun to play.  
+       – It must make sense in the current setup. Study the idea of a panning camera - aka the 8x8 led doesn’t need to be the entire map. It can only be the current field of view of the player.  
+       – The levels must progress dynamically. Aka the level difficulty, score and other properties should be a function of the level number or time. However, the challenge here is for it to grow in a playable way  
+       - not too easy for a long time so it becomes boring, not too hard too fast so it’s not attractive. Also, it’s nice to have an ending, a final level, a boss etc. It shouldn’t necessarily go on forever (but that’s fine, though).  
 
 **Components Used**: 16 Segment Led Display, 8x8 Led Matrix, MAX7219 Driver, Joystick, Buzzer, 10k Potentiometer, Capacitors, Resistors and Wires.

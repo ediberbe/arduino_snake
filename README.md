@@ -34,9 +34,7 @@ off. The menu should include the following functionality:
     (a) Screen 1: a message such as ”Congratulations on reaching level/score X”. ”You did better than y people.”. etc. Switches to screen 2 upon interaction (button press) or after a few moments.  
     (b) Screen 2: display relevant game info: score, time, lives left etc. Must inform player if he/she beat the highscore. This menu should only be closed by the player, pressing a button.
     
-    Keep in mind that you are creating a menu for a game. It should be intuitive and straight down obvious how to use it. A good test is if you give it to someone that has no idea what it is - are they able to use it easily? Think about when you pick up a game - the menu feels intuitive. Have fun!
-    
-  **Game requirements**:
+ **Game requirements**:
     – Minimal components: an LCD, a joystick, a buzzer and the led matrix.  
     – You must add basic sounds to the game (when ”eating” food, when dying, when finishing the level etc). Extra: add theme songs.  
     – It must be intuitive and fun to play.  

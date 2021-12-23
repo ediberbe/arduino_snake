@@ -1,6 +1,10 @@
 # arduino_snake
 Snake game using an arduino and various electrical components.
 
+**Components Used**: 16 Segment Led Display, 8x8 Led Matrix, MAX7219 Driver, Joystick, Buzzer, 10k Potentiometer, Capacitors, Resistors and Wires.
+![WhatsApp Image 2021-12-23 at 2 43 47 PM](https://user-images.githubusercontent.com/60759315/147242427-0460abba-9f7e-4c8b-aaa5-0e18c946136d.jpeg)
+https://youtu.be/DOaoat5Dq_A
+
 **Task Requirements**: Create a game. It must be fun and intuitive, and also remember that it is your game! Pick something that you like and have fun creating it.
 
 **Menu Requirements**: Create a menu for your game, emphasis on the game. You
@@ -41,9 +45,3 @@ off. The menu should include the following functionality:
     – It must make sense in the current setup. Study the idea of a panning camera - aka the 8x8 led doesn’t need to be the entire map. It can only be the current field of view of the player.  
     – The levels must progress dynamically. Aka the level difficulty, score and other properties should be a function of the level number or time. However, the challenge here is for it to grow in a playable way  
     - not too easy for a long time so it becomes boring, not too hard too fast so it’s not attractive. Also, it’s nice to have an ending, a final level, a boss etc. It shouldn’t necessarily go on forever (but that’s fine, though).  
-
-**Components**: 16 Segment Led Display, 8x8 Led Matrix, MAX7219 Driver, Joystick, Buzzer, 10k Potentiometer, Capacitors, Resistors and Wires.
-
-**Solution**:  
-![WhatsApp Image 2021-12-23 at 2 43 47 PM](https://user-images.githubusercontent.com/60759315/147242427-0460abba-9f7e-4c8b-aaa5-0e18c946136d.jpeg)
-https://youtu.be/DOaoat5Dq_A

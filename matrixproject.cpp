@@ -259,32 +259,31 @@ void joystickMovement() {
   SW_state = digitalRead(SW);
       
   if(xPosition<200 && LASTxVel != 1) {
-    Serial.println("Joystick Left");
+    //Joystick Left = Go Left
     yVel = 0;
     xVel = -1;
   }
 
   if(xPosition>800 && LASTxVel != -1) {
-    Serial.println("Joystick Right");
+    //Joystick Right = Go Right
     yVel = 0;
     xVel = 1;
   }
         
   if(yPosition<200 && LASTyVel != 1) {
-    Serial.println("Joystick Up");
+    //Joystick Up = Go Up
     yVel = -1;
     xVel = 0;
   }
 
   if(yPosition>800 && LASTyVel != -1) {
-    Serial.println("Joystick Down");
+    //Joystick Down = Go Down
     yVel = 1;
     xVel = 0;
   }
 
-  if(SW_state == 0 && SW_state_last == 1) {
-    Serial.println("Press");
-  }
+  //if joystick has been clicked
+  if(SW_state == 0 && SW_state_last == 1) {}
   SW_state_last = SW_state;
 }
 
@@ -447,8 +446,15 @@ void setup() {
 
   //Welcome message
   lcd.setCursor(0, 0);
-  lcd.print("Welcome to snake!");
-  delay(1000);
+  lcd.print("Welcome to snake");
+  for(int i=0;i<8;i++){
+    for(int j=0;j<8;j++){
+      matrix[i][j]=1;
+    }
+    updateMatrix();
+    delay(100);
+  }
+  clearMatrix();
   lcd.clear();
 }
 
@@ -482,11 +488,11 @@ void loop() {
         lcd.clear();
 
         if(xPosition<100) {
-          Serial.println("Joystick Left");
+          //Joystick Left
         }
 
         if(xPosition>900) {
-          Serial.println("Joystick Right");    
+          //Joystick Right = Select Option
           state = menuSelection;
           menuSelection = 0;
           lastMoved = millis();
@@ -495,20 +501,18 @@ void loop() {
         }
 
         if(yPosition<100) {
-          Serial.println("Joystick Up");
+          //Joystick Up = Scroll menu up
           if(menuSelection != 0) menuSelection--;
         }
 
         if(yPosition>900) {
-          Serial.println("Joystick Down");
+          //Joystick Down = Scroll menu down
           if(menuSelection != menuMainCount-1) menuSelection++;
         }
       }
 
       //if joystick has been clicked
-      if(SW_state == 0 && SW_state_last == 1) {
-        Serial.println("Press");
-      }
+      if(SW_state == 0 && SW_state_last == 1) {}
       SW_state_last = SW_state;
 
       break;

@@ -17,8 +17,7 @@ The game starts automatically when Arduino is powered on.
 ## Controls
 
 Main Menu  
-Joystick UP -> Select above menu it    
-Joystick DOWN -> Select below option  
+Joystick UP/DOWN -> Navigate menu
 Joystick RIGHT -> Enter sub-menu  
 Joystick LEFT -> Leave sub-menu  
 Joystick CLICK -> Some settings require the use of this function  
@@ -32,9 +31,9 @@ Main Menu
 - Start Game  
 - Highscore  
 - Settings  
- - Set difficulty  
- - Toggle audio  
- - Reset High-Scores  
+   - Set difficulty  
+   - Toggle audio  
+   - Reset High-Scores  
 - About  
 
 When starting game:

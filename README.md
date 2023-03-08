@@ -16,13 +16,13 @@ The game starts automatically when Arduino is powered on.
 
 ## Main Menu  
 
-Controls:  
+Controls:
 - Joystick UP/DOWN -> Navigate menu  
 - Joystick RIGHT -> Enter sub-menu  
 - Joystick LEFT -> Leave sub-menu  
 - Joystick CLICK -> Some settings require the use of this function  
 
-Features:  
+Features:
 - Start Game  
 - Highscore  
 - Settings  
@@ -34,15 +34,15 @@ Features:
 
 ## Game  
 
-Controls:  
+Controls:
 - Joystick UP/DOWN/LEFT/RIGHT -> Control snake direction  
 
-8x8 Led Matrix:  
+8x8 Led Matrix:
 - The moving dot is the snake.
 - The stationary dot is the target location you need to reach.  
 - Touching the flickering dot makes you lose the game.  
 - Touching the walls makes you lose the game.  
 
-16 Segment Led Display:  
+16 Segment Led Display:
 - Displays current score.  
 - When game ends, if you set a high enough score you will be asked to enter your name.  

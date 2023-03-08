@@ -24,7 +24,7 @@ Controls:
 
 16 Segment Led Display:
 - Start Game  
-- Highscore  
+- Highscores  
 - Settings  
   - Set difficulty  
   - Toggle audio  

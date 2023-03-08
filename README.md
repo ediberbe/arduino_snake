@@ -31,9 +31,9 @@ Main Menu
 - Start Game  
 - Highscore  
 - Settings  
-   - Set difficulty  
-   - Toggle audio  
-   - Reset High-Scores  
+  - Set difficulty  
+  - Toggle audio  
+  - Reset High-Scores  
 - About  
 
 When starting game:

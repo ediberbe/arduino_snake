@@ -12,7 +12,7 @@ Before you continue, ensure you have met the following requirements:
 
 ## Start  
 
-The game starts automatically when Arduino is powered on.  
+The program starts automatically when Arduino is powered on.  
 
 ## Main Menu  
 

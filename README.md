@@ -16,26 +16,26 @@ The game starts automatically when Arduino is powered on.
 
 ## Controls
 
-Main Menu
-Joystick UP -> Select above option
-Joystick DOWN -> Select below option
-Joystick RIGHT -> Enter sub-menu
-Joystick LEFT -> Leave sub-menu
-Joystick CLICK -> Some settings require the use of this function
+Main Menu  
+Joystick UP -> Select above menu it    
+Joystick DOWN -> Select below option  
+Joystick RIGHT -> Enter sub-menu  
+Joystick LEFT -> Leave sub-menu  
+Joystick CLICK -> Some settings require the use of this function  
 
-Game
-Joystick -> control the snake
+Game  
+Joystick -> control the snake  
 
 ## Features
 
-Main Menu
-- Start Game
-- Highscore
-- Settings
- - Set difficulty
- - Toggle audio
- - Reset High-Scores
-- About
+Main Menu  
+- Start Game  
+- Highscore  
+- Settings  
+ - Set difficulty  
+ - Toggle audio  
+ - Reset High-Scores  
+- About  
 
 When starting game:
 A dot will appear

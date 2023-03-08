@@ -20,7 +20,7 @@ Controls:
 - Joystick UP/DOWN -> Navigate menu  
 - Joystick RIGHT -> Enter sub-menu  
 - Joystick LEFT -> Leave sub-menu  
-- Joystick CLICK -> Some options require the use of this button
+- Joystick CLICK -> Some settings require the use of this button
 
 16 Segment Led Display:
 - Start Game  

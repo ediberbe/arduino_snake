@@ -41,8 +41,8 @@ Controls:
 - The moving dot is the snake.
 - The stationary dot is the target location you need to reach.  
 - Touching the flickering dot makes you lose the game.  
-- Touching the walls makes you lose the game.  
+- Touching the edge of the display makes you lose the game.  
 
 16 Segment Led Display:
 - Displays current score.  
-- When game ends, if you set a high enough score you will be asked to enter your name.  
+- When game ends, you will be asked to enter your name if the score is high enough.  

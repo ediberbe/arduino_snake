@@ -17,13 +17,13 @@ The game starts automatically when Arduino is powered on.
 ## Controls
 
 Main Menu  
-Joystick UP/DOWN -> Navigate menu
+Joystick UP/DOWN -> Navigate menu  
 Joystick RIGHT -> Enter sub-menu  
 Joystick LEFT -> Leave sub-menu  
-Joystick CLICK -> Some settings require the use of this function  
+Joystick CLICK -> Some settings require the use of this function
 
 Game  
-Joystick -> control the snake  
+Joystick UP/DOWN/LEFT/RIGHT -> control the snake  
 
 ## Features
 

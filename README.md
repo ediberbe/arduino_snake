@@ -20,9 +20,9 @@ Controls:
 - Joystick UP/DOWN -> Navigate menu  
 - Joystick RIGHT -> Enter sub-menu  
 - Joystick LEFT -> Leave sub-menu  
-- Joystick CLICK -> Some settings require the use of this function  
+- Joystick CLICK -> Some options require the use of this button
 
-Features:
+16 Segment Led Display:
 - Start Game  
 - Highscore  
 - Settings  
@@ -30,7 +30,6 @@ Features:
   - Toggle audio  
   - Reset Highscores  
 - About  
-
 
 ## Game  
 

@@ -37,7 +37,7 @@ Controls:
 - Joystick UP/DOWN/LEFT/RIGHT -> Control snake direction  
 
 8x8 Led Matrix:
-- The moving dot is the snake.
+- The moving dot/line is the snake.
 - The stationary dot is the target location you need to reach.  
 - Touching the flickering dot makes you lose the game.  
 - Touching the edge of the display makes you lose the game.  
